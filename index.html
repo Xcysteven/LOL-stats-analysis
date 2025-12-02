@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Is Summoner's Rift Fair? 2025 Audit</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0 auto;
+            max-width: 800px; 
+            padding: 20px;
+            color: #333;
+        }
+        h1 { color: #2c3e50; text-align: center; }
+        h2 { color: #34495e; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-top: 40px; }
+        .iframe-container {
+            width: 100%;
+            height: 600px;
+            border: none;
+            background-color: #f9f9f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>Is Summoner's Rift Fair?</h1>
+        <p style="text-align: center;">A Game Balance Audit of League of Legends (2025 Season)</p>
+        <p style="text-align: center;"><strong>By: Steven Xu</strong></p>
+    </header>
+
+    <section id="introduction">
+        <h2>Introduction</h2>
+        <p>
+            This project investigates the inherent design biases in the 2025 League of Legends map. 
+            Specifically, we audit whether the "Blue Side" has a geometric advantage in securing neutral objectives 
+            like the new Atakhan, and if this creates an unfair win probability.
+        </p>
+    </section>
+
+    <section id="hypothesis">
+        <h2>Hypothesis & Cleaning</h2>
+        <p>
+            <strong>Null Hypothesis:</strong> The map is balanced. Probability of securing objectives is equal for both sides.
+        </p>
+        <p>
+            <strong>Alternative Hypothesis:</strong> The map is biased. One side secures objectives significantly more often.
+        </p>
+        
+        <p><em>(Your Plotly Scatter Plot or Heatmap will go here)</em></p>
+        <div class="iframe-container">
+            [Graph Placeholder: Win Rate vs Control Rate]
+        </div>
+    </section>
+
+    <section id="modeling">
+        <h2>Game Design Analysis</h2>
+        <p>
+            Using a Random Forest Classifier, we determined which objective is the biggest "Win Condition."
+        </p>
+    </section>
+
+</body>
+</html>
