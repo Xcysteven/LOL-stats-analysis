@@ -3,71 +3,248 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Is Summoner's Rift Fair? | 2025 Audit</title>
     
-    <title>Is Summoner's Rift Fair? 2025 Audit</title>
-
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #3498db;
+            --bg-color: #f8f9fa;
+            --text-color: #333;
+        }
+        
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Roboto', sans-serif;
             line-height: 1.6;
+            color: var(--text-color);
+            margin: 0;
+            background-color: var(--bg-color);
+        }
+
+        /* Layout */
+        .container {
+            max-width: 900px;
             margin: 0 auto;
-            max-width: 800px; 
             padding: 20px;
-            color: #333;
+            background: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
-        h1 { color: #2c3e50; text-align: center; }
-        h2 { color: #34495e; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-top: 40px; }
-        .iframe-container {
+
+        /* Typography */
+        h1, h2, h3 { color: var(--primary-color); }
+        h1 { text-align: center; margin-bottom: 10px; font-weight: 700; }
+        h2 { border-bottom: 2px solid var(--accent-color); padding-bottom: 10px; margin-top: 50px; }
+        code { font-family: 'Source Code Pro', monospace; background: #eee; padding: 2px 5px; border-radius: 3px; }
+        
+        /* Image Handling */
+        .image-container {
             width: 100%;
-            height: 600px;
-            border: none;
-            background-color: #f9f9f9;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             margin: 20px 0;
+            text-align: center;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 5px;
+            background: #fff;
         }
+        img { 
+            max-width: 100%; 
+            height: auto; 
+            display: block; 
+            margin: 0 auto; 
+        }
+        .caption {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        /* Navigation */
+        nav {
+            position: sticky;
+            top: 0;
+            background: var(--primary-color);
+            padding: 10px 0;
+            z-index: 1000;
+        }
+        nav ul {
+            list-style: none;
+            text-align: center;
+            padding: 0;
+            margin: 0;
+        }
+        nav ul li { display: inline; margin: 0 15px; }
+        nav a { text-decoration: none; color: white; font-weight: bold; }
+        nav a:hover { color: var(--accent-color); }
     </style>
 </head>
 
 <body>
 
-    <header>
-        <h1>Is Summoner's Rift Fair?</h1>
-        <p style="text-align: center;">A Game Balance Audit of League of Legends (2025 Season)</p>
-        <p style="text-align: center;"><strong>By: Steven Xu</strong></p>
-    </header>
+    <nav>
+        <ul>
+            <li><a href="#intro">Introduction</a></li>
+            <li><a href="#cleaning">Data Cleaning</a></li>
+            <li><a href="#nmar">Missingness</a></li>
+            <li><a href="#hypothesis">Hypothesis</a></li>
+            <li><a href="#model">Modeling</a></li>
+            <li><a href="#fairness">Fairness</a></li>
+        </ul>
+    </nav>
 
-    <section id="introduction">
-        <h2>Introduction</h2>
-        <p>
-            This project investigates the inherent design biases in the 2025 League of Legends map. 
-            Specifically, we audit whether the "Blue Side" has a geometric advantage in securing neutral objectives 
-            like the new Atakhan, and if this creates an unfair win probability.
-        </p>
-    </section>
-
-    <section id="hypothesis">
-        <h2>Hypothesis & Cleaning</h2>
-        <p>
-            <strong>Null Hypothesis:</strong> The map is balanced. Probability of securing objectives is equal for both sides.
-        </p>
-        <p>
-            <strong>Alternative Hypothesis:</strong> The map is biased. One side secures objectives significantly more often.
-        </p>
+    <div class="container">
         
-        <p><em>(Your Plotly Scatter Plot or Heatmap will go here)</em></p>
-        <div class="iframe-container">
-            [Graph Placeholder: Win Rate vs Control Rate]
-        </div>
-    </section>
+        <header>
+            <h1>Is Summoner's Rift Fair?</h1>
+            <p style="text-align: center; font-size: 1.2em; color: #666;">
+                A Game Design Audit of the 2025 League of Legends Season
+            </p>
+            <p style="text-align: center;"><strong>By: Steven Xu</strong></p>
+        </header>
 
-    <section id="modeling">
-        <h2>Game Design Analysis</h2>
-        <p>
-            Using a Random Forest Classifier, we determined which objective is the biggest "Win Condition."
-        </p>
-    </section>
+        <section id="intro">
+            <h2>Introduction</h2>
+            <p>
+                In 2025, League of Legends introduced significant map changes and a new neutral objective: 
+                <strong>Atakhan</strong>. While these updates aimed to refresh the meta, they raised a critical question 
+                regarding competitive integrity: <strong>Is the map geometry symmetric?</strong>
+            </p>
+            <p>
+                This project performs a data-driven audit of "Map Side Bias." We investigate whether the Blue Side 
+                has an inherent geometric advantage in securing objectives compared to the Red Side, and if we can 
+                predict victory solely based on these objective captures.
+            </p>
+            <p>
+                <strong>The Dataset:</strong> We utilized the 2025 competitive match data from Oracle's Elixir, 
+                containing over 100,000 rows of professional play data from leagues including the LPL, LCK, and LCS.
+            </p>
+        </section>
+
+        <section id="cleaning">
+            <h2>Data Cleaning & EDA</h2>
+            <p>
+                To prepare the data for our "Game Design Audit," we performed the following cleaning steps:
+            </p>
+            <ul>
+                <li><strong>Filtering:</strong> We removed individual player rows to focus solely on Team-level statistics (`position == 'team'`).</li>
+                <li><strong>Imputation of Objectives:</strong> The <code>atakhans</code> column contained NaNs for matches played on patches prior to its release. We filled these with <code>0</code>, as "0 Atakhans Secured" is the logically correct value for those games.</li>
+                <li><strong>Update-with-patch:</strong> League of Legend patches changes often, we updated and fine-tuned some of our code such as change of void grubs from 6 to 4</li>
+                <li><strong>Feature Engineering:</strong> We calculated a <code>total_objectives</code> metric summing Dragons, Barons, Heralds, Voidgrubs, and Atakhans to measure overall map control.</li>
+            </ul>
+
+            <h3>Visualizing Map Bias</h3>
+            <p>
+                We plotted the <strong>Win Rate</strong> (Power Level) vs. <strong>Control Rate</strong> (Accessibility) for each objective. 
+                In a perfectly balanced game, Blue and Red dots would overlap perfectly.
+            </p>
+            
+            <div class="image-container">
+                <img src="game_balance.png" alt="Scatter plot of Objective Win Rate vs Control Rate">
+                <div class="caption">Figure 1: Objective Value vs. Accessibility. Blue dots appearing to the right of Red dots (e.g., Dragons) indicate a geometric advantage for Blue side.</div>
+            </div>
+        </section>
+
+        <section id="nmar">
+            <h2>Assessment of Missingness</h2>
+            <p>
+                We identified the <code>url</code> column (Match History Link) as <strong>NMAR (Not Missing at Random)</strong>.
+            </p>
+            <p>
+                <strong>Reasoning:</strong> The missingness of the URL likely depends on the <strong>server privacy settings</strong> 
+                of the match itself. Matches from restricted servers (like the Chinese Super Server) do not generate public URLs. And since
+                our dataset does not contain columns such as data accessibility and the host of competitions, thus, I claim that the dependency
+                of the column URL is missing not at random because the data was just simply not accessible.
+            </p>
+            
+            <div class="image-container">
+                <img src="distribution_url_by_league.png" alt="Bar chart showing missing URLs by League">
+                <div class="caption">Figure 2: Distribution of Missing URLs across different Leagues. The LPL shows significantly higher missingness.</div>
+            </div>
+
+            <p>
+                To verify this, we performed a permutation test checking the dependency of <code>url</code> missingness on the 
+                <code>league</code> column. The high observed TVD (Total Variation Distance) confirms the dependency. 
+            </p>
+
+            <div class="image-container">
+                <img src="perm_test_url.png" alt="Permutation Test for URL Missingness">
+                <div class="caption">Figure 3: Permutation Test results confirming that missingness is dependent on League (p < 0.05).</div>
+            </div>
+        </section>
+
+        <section id="hypothesis">
+            <h2>Hypothesis Testing: The Symmetry Audit</h2>
+            <p>
+                We tested whether the map geometry forces one side to secure significantly more objectives than the other.
+            </p>
+            <ul>
+                <li><strong>Null Hypothesis ($H_0$):</strong> The map is balanced. The distribution of objectives secured is the same for Blue and Red sides.</li>
+                <li><strong>Alternative Hypothesis ($H_1$):</strong> The map is biased. One side secures significantly more objectives due to geometric advantage.</li>
+                <li><strong>Test Statistic:</strong> Sum of Absolute Differences in Means (Bias Magnitude).</li>
+            </ul>
+            
+            <h3>Results</h3>
+            <div class="image-container">
+                <img src="perm_map_bias.png" alt="Permutation Test for Map Bias">
+                <div class="caption">Figure 4: Permutation Test for Map Bias. The observed bias magnitude of 1.43 is far outside the random distribution, indicating significant asymmetry.</div>
+            </div>
+            <p>
+                <strong>Conclusion:</strong> The observed statistic (1.43) falls far to the right of the simulated distribution. 
+                We <strong>Reject the Null Hypothesis</strong>. This provides strong evidence that the map geometry creates a significant structural advantage for one side regarding objective control.
+            </p>
+        </section>
+
+        <section id="model">
+            <h2>Predicting Victory: Baseline vs. Final Model</h2>
+            <p>
+                Can we predict the winner knowing <em>only</em> which objectives they took?
+            </p>
+
+            <h3>Baseline Model</h3>
+            <p>
+                Our baseline Random Forest used raw counts of dragons, barons, atakhans, void grubs and the game length.
+            </p>
+            <div class="image-container">
+                <img src="baseline_performance.png" alt="Baseline Confusion Matrix">
+                <div class="caption">Figure 5: Confusion Matrix for the Baseline Model.</div>
+            </div>
+
+            <h3>Final Model & Feature Importance</h3>
+            <p>
+                Our Final Model incorporated "Dragon Soul" logic and "Void Grub Thresholds." Below is the ranking of which features matter most for winning.
+                Dragon soul mechanic was designed by claiming 4 dragons on one side so this side will have a huge bonus in stats, different dragon soul will result in different bonuses
+                Void Grub Spike account in the fact that only claiming more than a threshold number of void grub will grant you this bonus, making this feature available will also make our classifier have a better result
+            </p>
+            <div class="image-container">
+                <img src="Feature Importance.png" alt="Feature Importance Bar Chart">
+                <div class="caption">Figure 6: Feature Importance. Barons are the strongest predictor of victory, followed closely by Atakhans.</div>
+            </div>
+        </section>
+
+        <section id="fairness">
+            <h2>Fairness Analysis</h2>
+            <p>
+                We audited our model to ensure it treats Blue Side and Red Side teams equally (Accuracy Parity).
+            </p>
+            <ul>
+                <li><strong>Group X:</strong> Blue Side Teams</li>
+                <li><strong>Group Y:</strong> Red Side Teams</li>
+                <li><strong>Metric:</strong> Accuracy Difference</li>
+            </ul>
+            
+            <div class="image-container">
+                <img src="fairness_real.png" alt="Fairness Permutation Test">
+                <div class="caption">Figure 7: Fairness Permutation Test. The observed difference (-0.017) is inside the random distribution.</div>
+            </div>
+            
+            <p>
+                <strong>Result:</strong> The observed difference in accuracy (-0.017) is well within the range of random chance. 
+                We <strong>Fail to Reject the Null Hypothesis</strong>. Our model is fair and predicts outcomes with equal accuracy regardless of Map Side.
+            </p>
+        </section>
+
+    </div>
 
 </body>
 </html>
